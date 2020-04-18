@@ -5,6 +5,7 @@ from flask import Flask
 
 def create_app():
     # Create and configure the app
+    print(__name__)
     app = Flask(__name__, instance_relative_config=True)
     app.config['SECRET_KEY'] = 'dev'
     app.config['DB_MONGOOSE'] = 'mongodb+srv://nelsonrds:connect98@cluster0-lq52p.mongodb.net/mongo-dev-db?retryWrites=true&w=majority'
