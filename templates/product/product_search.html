@@ -1,0 +1,89 @@
+{%extends 'base.html'%}
+
+{% block main %}
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h4 class="h4 mb-0 text-gray-800">Resultados para: {{context.search_text}}</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h6 class="h6 mb-0 text-black-800">{{context.number_results}} resultados.</h6>
+        </div>
+        <div class="col-md-7"></div>
+        <div class="col-md-2">
+            <div class="dropdown">
+                <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Ordenar por
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="{{context.product_search_link}}&order=name">Nome</a>
+                    <a class="dropdown-item" href="{{context.product_search_link}}&order=sub_title">Marca</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        {%for product in context.product_list:%}
+        <div class="col-sm-3 mb-4">
+            <div class="card border-left-danger shadow">
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">{{product.name}}
+                                <small>{{product.sub_title}}</small></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{product.price}}</div>
+                            {%if product.price_was: %}
+                            <small><s>{{product.price_was}}</s></small>
+                            {%endif%}
+                            <a href="/product/{{product.id}}" class="stretched-link"></a>
+                        </div>
+                        <div class="col-auto">
+                            <img src="{{product.image}}" alt="" width="100">
+                            <a href="/product/{{product.id}}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <button type="button" id="{{product.id}}"
+                        class="btn-prd btn btn-outline-danger btn-sm shadow-sm">{%if not product.exist: %}
+                        Seguir <i class="fas fa-heart"></i>
+                        {%else%}
+                        Retirar <i class="fas fa-heart-broken"></i>
+                        {%endif%}</button>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+
+</div>
+<script src="../../static/vendor/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".btn-prd").click(function (e) {
+            var span = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            var a = 'Seguir <i class="fas fa-heart"></i>';
+            var b = 'Retirar <i class="fas fa-heart-broken"></i>';
+            var tp = $("#" + e.currentTarget.id).children().hasClass("fa-heart-broken") ? "DELETE" : "POST";
+            $("#" + e.currentTarget.id).empty().append(span);
+            $.ajax({
+                url: "/product/" + e.currentTarget.id,
+                type: tp,
+                context: document.body
+            }).done(function (data) {
+                resp = jQuery.parseJSON(data);
+                el = $("#" + e.currentTarget.id).empty()
+                if (resp.error) {
+                    tp == "POST" ? el.append(a) : el.append(b);
+                } else {
+                    tp != "POST" ? el.append(a) : el.append(b);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

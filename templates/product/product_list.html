@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+
+{% block main %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Titulo</th>
+                <th>Sub Titulo</th>
+                <th>Empresa</th>
+                <th>Data de Criação</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for product in products_list%}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.sub_title}}</td>
+                    <td>{{product.sub_sub_title}}</td>
+                    <td>{{product.company}}</td>
+                    <td>{{product.creation_date}}</td>
+                    <td>
+                      {% if not product.is_deleted: %}
+                        <button class="btn btn-danger btn-circle btn-sm btndelete" id="{{product.id}}"><i class="fas fa-trash"></i></iclass></button>
+                      {%endif%}
+                    </td>
+                  </tr>
+                {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="../../static/vendor/jquery/jquery.min.js"></script>
+<script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="../../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="../../static/js/sb-admin-2.min.js"></script>
+<script src="../../static/js/product.js"></script>
+
+    {% endblock %}
