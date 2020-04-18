@@ -5,5 +5,5 @@ venv/
 *.pyc
 __pycache__/
 
-config
-__init__
+config.py
+__init__.py
