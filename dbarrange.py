@@ -1,7 +1,7 @@
 from mongoengine.connection import connect, disconnect
 from document import Product
 import json, unidecode
-connect(host="mongodb+srv://nelsonrds:connect98@cluster0-lq52p.mongodb.net/mongo-dev-db?retryWrites=true&w=majority")
+
 
 prd = Product.objects(tags__exists=True).count()
 print(prd)
